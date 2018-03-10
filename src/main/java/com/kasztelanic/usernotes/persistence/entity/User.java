@@ -1,5 +1,6 @@
 package com.kasztelanic.usernotes.persistence.entity;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -7,102 +8,112 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 
+import org.hibernate.annotations.GenericGenerator;
+
 @Entity
 public class User {
 
-    @Id
-    @GeneratedValue
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO, generator = "system-uuid")
+	@GenericGenerator(name = "system-uuid", strategy = "uuid2")
+	private String id;
 
-    @Column(nullable = false, unique = true, length = 254)
-    private String email;
+	@Column(nullable = false, length = 254)
+	private String email;
 
-    @Column(nullable = true, length = 30)
-    private String firstname;
+	@Column(nullable = true, length = 30)
+	private String firstname;
 
-    @Column(nullable = true, length = 30)
-    private String lastname;
+	@Column(nullable = true, length = 30)
+	private String lastname;
 
-    @OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private Set<Note> notes;
+	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "user_id")
+	private Set<Note> notes = new HashSet<>();
 
-    public User() {
-    }
+	public User() {
+	}
 
-    public User(String firstname, String lastname, String email) {
-	this.firstname = firstname;
-	this.lastname = lastname;
-	this.email = email;
-    }
+	public User(String firstname, String lastname, String email) {
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.email = email;
+	}
 
-    public Long getId() {
-	return id;
-    }
+	public String getId() {
+		return id;
+	}
 
-    public String getFirstname() {
-	return firstname;
-    }
+	public void setId(String id) {
+		this.id = id;
+	}
 
-    public void setFirstname(String firstname) {
-	this.firstname = firstname;
-    }
+	public String getFirstname() {
+		return firstname;
+	}
 
-    public String getLastname() {
-	return lastname;
-    }
+	public void setFirstname(String firstname) {
+		this.firstname = firstname;
+	}
 
-    public void setLastname(String lastname) {
-	this.lastname = lastname;
-    }
+	public String getLastname() {
+		return lastname;
+	}
 
-    public String getEmail() {
-	return email;
-    }
+	public void setLastname(String lastname) {
+		this.lastname = lastname;
+	}
 
-    public void setEmail(String email) {
-	this.email = email;
-    }
+	public String getEmail() {
+		return email;
+	}
 
-    public Set<Note> getNotes() {
-	return notes;
-    }
+	public void setEmail(String email) {
+		this.email = email;
+	}
 
-    public void setNotes(Set<Note> notes) {
-	this.notes = notes;
-    }
+	public Set<Note> getNotes() {
+		return notes;
+	}
 
-    @Override
-    public int hashCode() {
-	final int prime = 31;
-	int result = 1;
-	result = prime * result + ((email == null) ? 0 : email.hashCode());
-	return result;
-    }
+	public void setNotes(Set<Note> notes) {
+		this.notes.clear();
+		this.notes.addAll(notes);
+	}
 
-    @Override
-    public boolean equals(Object obj) {
-	if (this == obj)
-	    return true;
-	if (obj == null)
-	    return false;
-	if (getClass() != obj.getClass())
-	    return false;
-	User other = (User) obj;
-	if (email == null) {
-	    if (other.email != null)
-		return false;
-	} else if (!email.equals(other.email))
-	    return false;
-	return true;
-    }
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
 
-    @Override
-    public String toString() {
-	return "User [firstname=" + firstname + ", lastname=" + lastname + ", email=" + email + "]";
-    }
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		}
+		else if (!id.equals(other.id))
+			return false;
+		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", firstname=" + firstname + ", lastname=" + lastname + ", email=" + email + "]";
+	}
 }

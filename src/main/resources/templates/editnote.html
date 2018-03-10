@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+<title>Edit Note</title>
+<th:block th:include="layout/header"></th:block>
+</head>
+<body>
+	<div class="container">
+		<h2>Edit Note</h2>
+		<div>
+			<form class="form-horizontal" th:object="${note}"
+				th:action="@{/notes/{id}(id=${userid})}" method="post">
+				<div class="form-group">
+					<label class="col-sm-2 control-label">Id:</label>
+					<div class="col-sm-10">
+						<input type="text" th:readonly="${true}" class="form-control"
+							th:field="*{uuid}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">Title:</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" th:field="*{title}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="col-sm-2 control-label">Text:</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control" th:field="*{text}" />
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-2">
+						<button type="submit" class="btn btn-primary">Save</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+</body>
+</html>
