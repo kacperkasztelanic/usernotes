@@ -1,7 +1,7 @@
 package com.kasztelanic.usernotes.persistence.entity;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -21,6 +21,7 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "system-uuid")
 	@GenericGenerator(name = "system-uuid", strategy = "uuid2")
+	@Column(length = 36)
 	private String id;
 
 	@Column(nullable = false, length = 254)
@@ -34,7 +35,7 @@ public class User {
 
 	@OneToMany(orphanRemoval = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
-	private Set<Note> notes = new HashSet<>();
+	private List<Note> notes = new ArrayList<>();
 
 	public User() {
 	}
@@ -77,11 +78,11 @@ public class User {
 		this.email = email;
 	}
 
-	public Set<Note> getNotes() {
+	public List<Note> getNotes() {
 		return notes;
 	}
 
-	public void setNotes(Set<Note> notes) {
+	public void setNotes(List<Note> notes) {
 		this.notes.clear();
 		this.notes.addAll(notes);
 	}

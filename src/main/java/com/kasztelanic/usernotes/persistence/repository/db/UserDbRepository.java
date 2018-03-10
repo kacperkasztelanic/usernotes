@@ -67,14 +67,8 @@ public class UserDbRepository implements UserRepository {
 	public void deleteAll() {
 		userCrudRepository.deleteAll();
 	}
-
-	@Override
-	public User findByEmail(String email) {
-		return userCrudRepository.findByEmail(email);
-	}
 }
 
 @Repository
 interface UserCrudRepository extends JpaRepository<User, String> {
-	User findByEmail(String email);
 }

@@ -7,5 +7,4 @@ import com.kasztelanic.usernotes.persistence.entity.User;
 
 @NoRepositoryBean
 public interface UserRepository extends CrudRepository<User, String> {
-	User findByEmail(String email);
 }

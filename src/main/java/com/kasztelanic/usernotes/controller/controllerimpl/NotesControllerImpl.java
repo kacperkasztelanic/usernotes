@@ -21,7 +21,7 @@ public class NotesControllerImpl implements NotesController {
 	@RequestMapping(path = "/notes/{userid}", method = RequestMethod.GET)
 	public String findNotesForUser(Model model, @PathVariable(value = "userid") String userId) {
 		model.addAttribute("usernotes", userService.findOne(userId).getNotes());
-		model.addAttribute("userid", userId);
+		model.addAttribute("user", userService.findOne(userId));
 		return "usernotes";
 	}
 

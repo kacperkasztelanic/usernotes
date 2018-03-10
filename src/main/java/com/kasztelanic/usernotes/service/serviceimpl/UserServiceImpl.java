@@ -1,6 +1,6 @@
 package com.kasztelanic.usernotes.service.serviceimpl;
 
-import java.util.Set;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -40,14 +40,14 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public Note findNote(String userId, String noteId) {
 		User user = findOne(userId);
-		Set<Note> notes = user.getNotes();
+		List<Note> notes = user.getNotes();
 		return notes.stream().filter(n -> n.getUuid().equals(noteId)).findFirst().get();
 	}
 
 	@Override
 	public void insertOrUpdateNote(String userId, Note note) {
 		User user = findOne(userId);
-		Set<Note> notes = user.getNotes();
+		List<Note> notes = user.getNotes();
 		if (notes.contains(note)) {
 			notes.remove(note);
 		}

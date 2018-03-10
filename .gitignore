@@ -24,3 +24,5 @@ nbdist/
 .nb-gradle/
 
 config/application.properties
+
+database.json
