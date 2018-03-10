@@ -6,15 +6,13 @@ import com.kasztelanic.usernotes.persistence.entity.User;
 
 public interface UserController {
 
-	public String index(Model model);
+	String findAllUsers(Model model);
 
-	public String createUser(Model model);
+	String createUser(Model model);
 
-	public String saveUser(User product);
+	String updateUser(Model model, String id);
 
-	public String getAllUsers(Model model);
+	String deleteUser(String id);
 
-	public String editProduct(Model model, String id);
-
-	public String deleteProduct(String id);
+	String saveUser(User product);
 }

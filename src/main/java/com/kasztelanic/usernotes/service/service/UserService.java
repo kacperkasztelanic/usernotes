@@ -1,14 +1,21 @@
 package com.kasztelanic.usernotes.service.service;
 
+import com.kasztelanic.usernotes.persistence.entity.Note;
 import com.kasztelanic.usernotes.persistence.entity.User;
 
 public interface UserService {
 
-	public Iterable<User> findAll();
+	Iterable<User> findAll();
 
-	public User findOne(String id);
+	User findOne(String id);
 
-	public void delete(String id);
+	void delete(String id);
 
-	public User save(User user);
+	User save(User user);
+
+	Note findNote(String userId, String noteId);
+
+	void insertOrUpdateNote(String userId, Note note);
+
+	void deleteNote(String userId, String noteId);
 }

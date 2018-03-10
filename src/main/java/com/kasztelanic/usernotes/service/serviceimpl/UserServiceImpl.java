@@ -1,9 +1,12 @@
 package com.kasztelanic.usernotes.service.serviceimpl;
 
+import java.util.Set;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.kasztelanic.usernotes.persistence.entity.Note;
 import com.kasztelanic.usernotes.persistence.entity.User;
 import com.kasztelanic.usernotes.persistence.repository.common.UserRepository;
 import com.kasztelanic.usernotes.service.service.UserService;
@@ -31,16 +34,31 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public User save(User user) {
-		// User existing = userRepository.findByEmail(user.getEmail());
-		// if (existing != null) {
-		// // existing.setFirstname(user.getFirstname());
-		// // existing.setLastname(user.getLastname());
-		// // Set<Note> notes = new HashSet<>();
-		// // notes.addAll(existing.getNotes());
-		// // existing.setNotes(notes);
-		// // return userRepository.save(existing);
-		// return existing;
-		// }
 		return userRepository.save(user);
+	}
+
+	@Override
+	public Note findNote(String userId, String noteId) {
+		User user = findOne(userId);
+		Set<Note> notes = user.getNotes();
+		return notes.stream().filter(n -> n.getUuid().equals(noteId)).findFirst().get();
+	}
+
+	@Override
+	public void insertOrUpdateNote(String userId, Note note) {
+		User user = findOne(userId);
+		Set<Note> notes = user.getNotes();
+		if (notes.contains(note)) {
+			notes.remove(note);
+		}
+		notes.add(note);
+		save(user);
+	}
+
+	@Override
+	public void deleteNote(String userId, String noteId) {
+		User user = findOne(userId);
+		user.getNotes().removeIf(n -> n.getUuid().equals(noteId));
+		save(user);
 	}
 }
