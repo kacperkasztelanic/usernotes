@@ -5,17 +5,17 @@ import com.kasztelanic.usernotes.persistence.entity.User;
 
 public interface UserService {
 
-	Iterable<User> findAll();
+    Iterable<User> findAll();
 
-	User findOne(String id);
+    User findOne(String id);
 
-	void delete(String id);
+    void delete(String id);
 
-	User save(User user);
+    User save(User user);
 
-	Note findNote(String userId, String noteId);
+    Note findNote(String userId, String noteId);
 
-	void insertOrUpdateNote(String userId, Note note);
+    void insertOrUpdateNote(String userId, Note note);
 
-	void deleteNote(String userId, String noteId);
+    void deleteNote(String userId, String noteId);
 }

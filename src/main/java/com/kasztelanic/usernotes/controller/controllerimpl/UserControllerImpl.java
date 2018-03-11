@@ -14,41 +14,41 @@ import com.kasztelanic.usernotes.service.service.UserService;
 @Controller
 public class UserControllerImpl implements UserController {
 
-	@Autowired
-	private UserService userService;
+    @Autowired
+    private UserService userService;
 
-	@Override
-	@RequestMapping(path = { "/", "/users" }, method = RequestMethod.GET)
-	public String findAllUsers(Model model) {
-		model.addAttribute("users", userService.findAll());
-		return "index";
-	}
+    @Override
+    @RequestMapping(path = { "/", "/users" }, method = RequestMethod.GET)
+    public String findAllUsers(Model model) {
+	model.addAttribute("users", userService.findAll());
+	return "index";
+    }
 
-	@Override
-	@RequestMapping(path = "/users/add", method = RequestMethod.GET)
-	public String createUser(Model model) {
-		model.addAttribute("user", new User());
-		return "edit";
-	}
+    @Override
+    @RequestMapping(path = "/users/add", method = RequestMethod.GET)
+    public String createUser(Model model) {
+	model.addAttribute("user", new User());
+	return "edit";
+    }
 
-	@Override
-	@RequestMapping(path = "/users/edit/{id}", method = RequestMethod.GET)
-	public String updateUser(Model model, @PathVariable(value = "id") String id) {
-		model.addAttribute("user", userService.findOne(id));
-		return "edit";
-	}
+    @Override
+    @RequestMapping(path = "/users/edit/{id}", method = RequestMethod.GET)
+    public String updateUser(Model model, @PathVariable(value = "id") String id) {
+	model.addAttribute("user", userService.findOne(id));
+	return "edit";
+    }
 
-	@Override
-	@RequestMapping(path = "/users/delete/{id}", method = RequestMethod.GET)
-	public String deleteUser(@PathVariable(name = "id") String id) {
-		userService.delete(id);
-		return "redirect:/";
-	}
+    @Override
+    @RequestMapping(path = "/users/delete/{id}", method = RequestMethod.GET)
+    public String deleteUser(@PathVariable(name = "id") String id) {
+	userService.delete(id);
+	return "redirect:/";
+    }
 
-	@Override
-	@RequestMapping(path = "users", method = RequestMethod.POST)
-	public String saveUser(User user) {
-		userService.save(user);
-		return "redirect:/";
-	}
+    @Override
+    @RequestMapping(path = "users", method = RequestMethod.POST)
+    public String saveUser(User user) {
+	userService.save(user);
+	return "redirect:/";
+    }
 }
