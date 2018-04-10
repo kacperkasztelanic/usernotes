@@ -24,13 +24,13 @@ public class GlobalConfig {
 
     @Bean
     public UserRepository userRepository() {
-	if (repositoryType.equalsIgnoreCase(RepositoryType.DB.name())) {
-	    return userDbRepository;
-	}
-	if (repositoryType.equalsIgnoreCase(RepositoryType.FILE.name())) {
-	    return userFileRepository;
-	}
-	throw new IllegalArgumentException("Only repositories defined in " + RepositoryType.class.getCanonicalName()
-		+ ":" + Arrays.toString(RepositoryType.values()) + " are allowed!");
+        if (repositoryType.equalsIgnoreCase(RepositoryType.DB.name())) {
+            return userDbRepository;
+        }
+        if (repositoryType.equalsIgnoreCase(RepositoryType.FILE.name())) {
+            return userFileRepository;
+        }
+        throw new IllegalArgumentException("Only repositories defined in " + RepositoryType.class.getCanonicalName()
+                + ":" + Arrays.toString(RepositoryType.values()) + " are allowed!");
     }
 }
