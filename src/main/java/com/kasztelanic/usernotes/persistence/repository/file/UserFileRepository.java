@@ -59,7 +59,7 @@ public class UserFileRepository implements UserRepository {
 
     @Override
     public User findOne(String id) {
-        return loadData().entrySet().stream().filter(x -> x.getKey().equals(id)).map(x -> x.getValue()).findFirst()
+        return loadData().entrySet().stream().filter(x -> x.getKey().equals(id)).map(Map.Entry::getValue).findFirst()
                 .orElse(null);
     }
 
@@ -76,7 +76,7 @@ public class UserFileRepository implements UserRepository {
     @Override
     public Iterable<User> findAll(Iterable<String> ids) {
         Set<String> idSet = StreamSupport.stream(ids.spliterator(), false).collect(Collectors.toSet());
-        return loadData().entrySet().stream().filter(x -> idSet.contains(x.getKey())).map(x -> x.getValue())
+        return loadData().entrySet().stream().filter(x -> idSet.contains(x.getKey())).map(Map.Entry::getValue)
                 .collect(Collectors.toList());
     }
 

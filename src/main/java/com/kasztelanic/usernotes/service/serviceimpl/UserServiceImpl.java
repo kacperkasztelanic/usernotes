@@ -41,7 +41,7 @@ public class UserServiceImpl implements UserService {
     public Note findNote(String userId, String noteId) {
         User user = findOne(userId);
         List<Note> notes = user.getNotes();
-        return notes.stream().filter(n -> n.getUuid().equals(noteId)).findFirst().get();
+        return notes.stream().filter(n -> n.getUuid().equals(noteId)).findFirst().orElse(null);
     }
 
     @Override
