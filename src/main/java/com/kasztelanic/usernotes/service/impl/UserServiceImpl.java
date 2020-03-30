@@ -1,15 +1,15 @@
-package com.kasztelanic.usernotes.service.serviceimpl;
-
-import java.util.List;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
+package com.kasztelanic.usernotes.service.impl;
 
 import com.kasztelanic.usernotes.persistence.entity.Note;
 import com.kasztelanic.usernotes.persistence.entity.User;
 import com.kasztelanic.usernotes.persistence.repository.common.UserRepository;
-import com.kasztelanic.usernotes.service.service.UserService;
+import com.kasztelanic.usernotes.service.UserService;
+
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+import javax.annotation.Resource;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -48,9 +48,7 @@ public class UserServiceImpl implements UserService {
     public void insertOrUpdateNote(String userId, Note note) {
         User user = findOne(userId);
         List<Note> notes = user.getNotes();
-        if (notes.contains(note)) {
-            notes.remove(note);
-        }
+        notes.remove(note);
         notes.add(note);
         save(user);
     }

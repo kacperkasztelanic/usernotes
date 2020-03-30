@@ -1,5 +1,15 @@
 package com.kasztelanic.usernotes.persistence.repository.file;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.kasztelanic.usernotes.persistence.entity.Note;
+import com.kasztelanic.usernotes.persistence.entity.User;
+import com.kasztelanic.usernotes.persistence.repository.common.UserRepository;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Repository;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -10,27 +20,22 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Repository;
-
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kasztelanic.usernotes.persistence.entity.Note;
-import com.kasztelanic.usernotes.persistence.entity.User;
-import com.kasztelanic.usernotes.persistence.repository.common.UserRepository;
 
 @Repository
 public class UserFileRepository implements UserRepository {
 
-    @Autowired
-    private ObjectMapper objectMapper;
+    private final ObjectMapper objectMapper;
 
     @Value("${file_repository}")
     private String databasePath;
+
+    @Autowired
+    public UserFileRepository(ObjectMapper objectMapper) {
+        this.objectMapper = objectMapper;
+    }
 
     @Override
     public <S extends User> S save(S entity) {
@@ -39,7 +44,8 @@ public class UserFileRepository implements UserRepository {
             String id = UUID.randomUUID().toString();
             entity.setId(id);
             userMap.put(id, entity);
-        } else {
+        }
+        else {
             userMap.put(entity.getId(), entity);
         }
         List<Note> notes = entity.getNotes();
@@ -54,12 +60,17 @@ public class UserFileRepository implements UserRepository {
 
     @Override
     public <S extends User> Iterable<S> save(Iterable<S> entities) {
-        return StreamSupport.stream(entities.spliterator(), false).map(this::save).collect(Collectors.toList());
+        return StreamSupport.stream(entities.spliterator(), false)//
+                .map(this::save)//
+                .collect(Collectors.toList());
     }
 
     @Override
     public User findOne(String id) {
-        return loadData().entrySet().stream().filter(x -> x.getKey().equals(id)).map(Map.Entry::getValue).findFirst()
+        return loadData().entrySet().stream()//
+                .filter(x -> x.getKey().equals(id))//
+                .map(Map.Entry::getValue)//
+                .findFirst()//
                 .orElse(null);
     }
 
@@ -76,7 +87,9 @@ public class UserFileRepository implements UserRepository {
     @Override
     public Iterable<User> findAll(Iterable<String> ids) {
         Set<String> idSet = StreamSupport.stream(ids.spliterator(), false).collect(Collectors.toSet());
-        return loadData().entrySet().stream().filter(x -> idSet.contains(x.getKey())).map(Map.Entry::getValue)
+        return loadData().entrySet().stream()//
+                .filter(x -> idSet.contains(x.getKey()))//
+                .map(Map.Entry::getValue)//
                 .collect(Collectors.toList());
     }
 
@@ -115,9 +128,9 @@ public class UserFileRepository implements UserRepository {
         try {
             List<User> userList = objectMapper.readValue(new File(databasePath), new TypeReference<List<User>>() {
             });
-            return userList.stream().collect(Collectors.toMap(User::getId, u -> u));
+            return userList.stream().collect(Collectors.toMap(User::getId, Function.identity()));
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
         return new HashMap<>();
     }
@@ -126,7 +139,7 @@ public class UserFileRepository implements UserRepository {
         try {
             objectMapper.writeValue(new FileWriter(new File(databasePath)), data.values());
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println(e.getMessage());
         }
     }
 }

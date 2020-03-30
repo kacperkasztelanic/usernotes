@@ -1,24 +1,28 @@
-package com.kasztelanic.usernotes.controller.controllerimpl;
+package com.kasztelanic.usernotes.controller.impl;
+
+import com.kasztelanic.usernotes.controller.NotesController;
+import com.kasztelanic.usernotes.persistence.entity.Note;
+import com.kasztelanic.usernotes.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-
-import com.kasztelanic.usernotes.controller.controller.NotesController;
-import com.kasztelanic.usernotes.persistence.entity.Note;
-import com.kasztelanic.usernotes.service.service.UserService;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class NotesControllerImpl implements NotesController {
 
+    private final UserService userService;
+
     @Autowired
-    private UserService userService;
+    public NotesControllerImpl(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
-    @RequestMapping(path = "/notes/{userid}", method = RequestMethod.GET)
+    @GetMapping("/notes/{userid}")
     public String findNotesForUser(Model model, @PathVariable(value = "userid") String userId) {
         model.addAttribute("usernotes", userService.findOne(userId).getNotes());
         model.addAttribute("user", userService.findOne(userId));
@@ -26,7 +30,7 @@ public class NotesControllerImpl implements NotesController {
     }
 
     @Override
-    @RequestMapping(path = "/notes/add/{userid}", method = RequestMethod.GET)
+    @GetMapping("/notes/add/{userid}")
     public String createNote(Model model, @PathVariable(name = "userid") String userId) {
         model.addAttribute("note", new Note());
         model.addAttribute("userid", userId);
@@ -34,7 +38,7 @@ public class NotesControllerImpl implements NotesController {
     }
 
     @Override
-    @RequestMapping(path = "/notes/edit/{userid}/{noteid}", method = RequestMethod.GET)
+    @GetMapping("/notes/edit/{userid}/{noteid}")
     public String updateNote(Model model, @PathVariable(value = "userid") String userId,
             @PathVariable(value = "noteid") String noteId) {
         model.addAttribute("userid", userId);
@@ -43,7 +47,7 @@ public class NotesControllerImpl implements NotesController {
     }
 
     @Override
-    @RequestMapping(path = "/notes/delete/{userid}/{noteid}", method = RequestMethod.GET)
+    @GetMapping("/notes/delete/{userid}/{noteid}")
     public String deleteNote(@PathVariable(name = "userid") String userId,
             @PathVariable(name = "noteid") String noteId) {
         userService.deleteNote(userId, noteId);
@@ -51,7 +55,7 @@ public class NotesControllerImpl implements NotesController {
     }
 
     @Override
-    @RequestMapping(path = "notes/{userid}", method = RequestMethod.POST)
+    @PostMapping("notes/{userid}")
     public String saveNote(@PathVariable(name = "userid") String userId, Note note) {
         userService.insertOrUpdateNote(userId, note);
         return "redirect:/notes/" + userId;

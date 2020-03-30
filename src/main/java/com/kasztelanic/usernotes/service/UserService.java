@@ -1,4 +1,4 @@
-package com.kasztelanic.usernotes.service.service;
+package com.kasztelanic.usernotes.service;
 
 import com.kasztelanic.usernotes.persistence.entity.Note;
 import com.kasztelanic.usernotes.persistence.entity.User;

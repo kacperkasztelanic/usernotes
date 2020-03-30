@@ -1,24 +1,28 @@
 package com.kasztelanic.usernotes.boot;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.kasztelanic.usernotes.persistence.entity.Note;
+import com.kasztelanic.usernotes.persistence.entity.User;
+import com.kasztelanic.usernotes.persistence.repository.common.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import com.kasztelanic.usernotes.persistence.entity.Note;
-import com.kasztelanic.usernotes.persistence.entity.User;
-import com.kasztelanic.usernotes.persistence.repository.common.UserRepository;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class DataLoader implements CommandLineRunner {
 
+    private final UserRepository userRepository;
+
     @Autowired
-    private UserRepository userRepository;
+    public DataLoader(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     @Override
-    public void run(String... args) throws Exception {
+    public void run(String... args) {
         userRepository.deleteAll();
         Note note1 = new Note();
         note1.setText("This is the first note...");

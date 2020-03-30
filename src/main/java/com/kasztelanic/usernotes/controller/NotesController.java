@@ -1,8 +1,8 @@
-package com.kasztelanic.usernotes.controller.controller;
-
-import org.springframework.ui.Model;
+package com.kasztelanic.usernotes.controller;
 
 import com.kasztelanic.usernotes.persistence.entity.Note;
+
+import org.springframework.ui.Model;
 
 public interface NotesController {
 
